@@ -1,0 +1,52 @@
+.full-screen {
+    padding: 0 10px;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.header {
+    padding: 15px 0;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.clipboard-row {
+    margin: 25px 0;
+    box-sizing: border-box;
+    width: 100%;
+    & > textarea {
+        width: 100%;
+        box-sizing: border-box;
+        outline: none;
+        color: black;
+    }
+}
+
+.actions-container {
+    margin-top: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ways-to-copy {
+    display: flex;
+    align-items: center;
+    & > div:not(:first-of-type) {
+        margin-left: 10px;
+    }
+}
+
+.copy-alerts-container {
+    position: fixed;
+    top: 5px;
+    right: 5px;
+}
+
+.copy-alert {
+    background-color: #653818;
+    color: #D2B04C;
+    padding: 8px 16px 10px;
+    margin-bottom: 8px;
+    border-radius: 15px;
+}

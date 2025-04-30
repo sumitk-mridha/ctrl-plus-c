@@ -1,0 +1,30 @@
+body {
+  height: 100%;
+  margin: 0;
+}
+
+.full-screen {
+  height: 100vh;
+  width: 100vw;
+  background-color: #D2B04C;
+}
+
+.with-center-child {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+button {
+  background-color: #653818;
+  color: #D2B04C;
+  border: none;
+  padding: 10px 20px 8px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+}
+button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
