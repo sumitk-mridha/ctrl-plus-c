@@ -78,7 +78,7 @@ function Clipboards() {
             <button type="button" onClick={addClipboard} disabled={clipboards.length >= 10} title="A maximum of 10 clipboards are allowed">Add Clipboard</button>
             {clipboards.map((clipboard, index) => (
                 <div key={index} className="clipboard-row">
-                    <textarea value={clipboard} rows={6} onInput={(e) => {updateText(e.target.value,index)}}></textarea>
+                    <textarea value={clipboard} rows={6} onInput={(e) => {updateText(e.target.value,index)}} spellCheck={false}></textarea>
                     <div className="actions-container">
                         <div className="ways-to-copy">
                             <button type="button" onClick={() => copy(index, clipboard)}>Copy To Clipboard</button>
