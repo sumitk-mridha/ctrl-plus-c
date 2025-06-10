@@ -1,41 +1,55 @@
-import { useState, useEffect, createElement } from "react";
+import { useEffect, createElement, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
+import clipboardsSlice from "../../redux/clipboardsSlice";
+import toastsSlice from "../../redux/toastsSlice";
 import "./Clipboards.scss";
 
 function Clipboards() {
+    const dispatch = useDispatch();
+    const clipboards = useSelector((state) => state.clipboards.clipboards);
+    const toasts = useSelector((state) => state.toasts.toasts);
+
+    const copy = useCallback((index, text) => {
+        navigator.clipboard.writeText(text).then(() => {
+            const id = Date.now();
+            dispatch(toastsSlice.actions.addToast({
+                id,
+                elem: createElement('div', { className: "copy-alert" }, `Copied text from clipboard ${index + 1} successfully!`)
+            }));
+            setTimeout(() => {
+                dispatch(toastsSlice.actions.removeToast(id));
+            }, 3000);
+        }).catch(err => {
+            console.error('Failed to copy: ', err);
+        });
+    }, [dispatch]);
+
+    const handleKeyDown = useCallback((event) => {
+        if (event.ctrlKey) {
+            if (/^[0-9]$/.test(event.key)) {
+                event.preventDefault();
+                let index = parseInt(event.key) ? parseInt(event.key)-1 : 9;
+                copy(index, clipboards[index]);
+            }
+        }
+    }, [clipboards, copy]);
+
     useEffect(() => {
         document.title = "Clipboards";
-        const handleKeyDown = (event) => {
-            if (event.ctrlKey) {
-                if (/^[0-9]$/.test(event.key)) {
-                    event.preventDefault();
-                    let index = parseInt(event.key) ? parseInt(event.key)-1 : 9;
-                    setClipboards((prevClipboards) => {
-                        console.log(event.key,prevClipboards);
-                        if (index < prevClipboards.length) {
-                            copy(index, prevClipboards[index]);
-                        }
-                        return prevClipboards;
-                    });
-                }
-            }
-        };
     
         window.addEventListener('keydown', handleKeyDown);
         return () => {
           window.removeEventListener('keydown', handleKeyDown);
         };
-    }, []);
-
-    const [clipboards, setClipboards] = useState([""]);
-    const [toasts, setToasts] = useState([]);
+    }, [handleKeyDown]);
 
     const addClipboard = () => {
         if(clipboards.length >= 10) {
             console.log("You can only have a maximum 10 clipboards.");
             return;
         }
-        setClipboards([...clipboards, ""]);
+        dispatch(clipboardsSlice.actions.addClipboard());
     };
 
     const removeClipboard = (index) => {
@@ -43,33 +57,11 @@ function Clipboards() {
             console.log("You need to have at least 1 clipboard.");
             return;
         }
-        const newClipboards = [...clipboards];
-        newClipboards.splice(index, 1);
-        setClipboards(newClipboards);
+        dispatch(clipboardsSlice.actions.removeClipboard(index));
     }
 
     const updateText = (text, index) => {
-        const newClipboards = [...clipboards];
-        newClipboards[index] = text;
-        setClipboards(newClipboards);
-    }
-
-    const copy = (index, text) => {
-        navigator.clipboard.writeText(text).then(() => {
-            setToasts((prevToasts) => {
-                const createdAt = Date.now();
-                const toastObj = {
-                    id: createdAt,
-                    elem: createElement('div',{className:"copy-alert"},`Copied text from clipboard ${index+1} successfully!`)
-                }
-                setTimeout(() => {
-                    setToasts((prevToasts) => prevToasts.filter((toast) => toast.id !== createdAt));
-                }, 3000);
-                return [...prevToasts, toastObj];
-            });
-        }).catch(err => {
-            console.error('Failed to copy: ', err);
-        });
+        dispatch(clipboardsSlice.actions.updateClipboardText({ index, text }));
     }
 
     return (

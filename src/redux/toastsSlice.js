@@ -7,12 +7,10 @@ const toastsSlice = createSlice({
     },
     reducers: {
         addToast: (state, action) => {
-            const { id, message, type } = action.payload;
-            state.toasts.push({ id, message, type });
+            state.toasts.push(action.payload);
         },
         removeToast: (state, action) => {
-            const id = action.payload;
-            state.toasts = state.toasts.filter(toast => toast.id !== id);
+            state.toasts = state.toasts.filter(toast => toast.id !== action.payload);
         }
     }
 });
