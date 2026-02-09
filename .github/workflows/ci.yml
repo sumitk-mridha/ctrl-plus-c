@@ -18,11 +18,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Run React tests
-        run: npm test -- --watch=false
+        run: npm test
       - name: Create a build
         run: npm run build
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: skm-cpc-build
-          path: build
+          path: dist
