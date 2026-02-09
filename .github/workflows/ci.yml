@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: 24
       - name: Install dependencies
-        run: npm install
+        run: npm ci
       - name: Run React tests
         run: npm test -- --watch=false
       - name: Create a build
