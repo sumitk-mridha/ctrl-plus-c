@@ -9,7 +9,7 @@ import store from './redux/store';
 function App() {
   return (
     <Provider store={store}>
-      <Router>
+      <Router basename='/ctrl-plus-c'>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/clipboards" element={<Clipboards />} />
