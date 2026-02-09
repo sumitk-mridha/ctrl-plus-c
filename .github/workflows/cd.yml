@@ -7,6 +7,10 @@ on:
     types:
       - completed
 
+permissions:
+  actions: read
+  contents: write
+
 jobs:
   deploy:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
@@ -18,6 +22,7 @@ jobs:
         with:
           name: skm-cpc-build
           path: dist
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ github.event.workflow_run.id }}
       - name: Deploy to Github Pages
         uses: peaceiris/actions-gh-pages@v4
