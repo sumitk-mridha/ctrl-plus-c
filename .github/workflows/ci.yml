@@ -21,8 +21,12 @@ jobs:
         run: npm test
       - name: Create a build
         run: npm run build
+      - name: Check file paths
+        run: |
+          sudo apt-get install -y tree
+          tree -a -I 'node_modules|.git'
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: skm-cpc-build
-          path: dist
+          path: dist/
